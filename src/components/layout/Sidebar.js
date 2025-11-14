@@ -9,7 +9,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggle }) => {
   const { isDark } = useTheme();
 
 const menuItems = [
-  { path: '/', icon: '📊', label: 'Dashboard', badge: null },
+  { path: '/dashboard', icon: '📊', label: 'Dashboard', badge: null },
   { path: '/students', icon: '🎓', label: 'Students', badge: '12' }, // Changed this line
   { path: '/courses', icon: '📚', label: 'Courses', badge: null },
   { path: '/attendance', icon: '✅', label: 'Attendance', badge: null },
@@ -44,7 +44,7 @@ const menuItems = [
           
           <div className="sidebar-header-actions">
             {/* Hide toggle button on mobile since we have the hamburger menu */}
-            <button 
+            {/* <button 
               className="sidebar-toggle-btn desktop-only" 
               onClick={onToggle}
               title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
@@ -56,7 +56,7 @@ const menuItems = [
                   <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 )}
               </svg>
-            </button>
+            </button> */}
             
             <button className="sidebar-close mobile-only" onClick={onClose}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
