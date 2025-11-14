@@ -29,6 +29,7 @@ const Layout = ({ children }) => {
   return (
     <div className="layout">
       <Header 
+        
         onMenuToggle={openMobileSidebar}
         onSidebarToggle={toggleSidebar}
         sidebarCollapsed={sidebarCollapsed}
