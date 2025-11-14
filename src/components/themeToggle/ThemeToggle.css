@@ -1,0 +1,46 @@
+/* components/ThemeToggle.css */
+.theme-toggle {
+  background: none;
+  border: none;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-track {
+  width: 48px;
+  height: 24px;
+  background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+  border-radius: 12px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-thumb {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-toggle.dark .theme-toggle-thumb {
+  transform: translateX(24px);
+}
+
+.theme-toggle:hover .theme-toggle-track {
+  opacity: 0.8;
+}
+
+.theme-toggle:active .theme-toggle-thumb {
+  transform: scale(0.95);
+}
