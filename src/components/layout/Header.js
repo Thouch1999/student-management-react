@@ -1,5 +1,7 @@
 import "./Header.css";
 import ThemeToggle from "../themeToggle/ThemeToggle";
+import { useState } from "react";
+import ModalLogout from "../modal/ModalLogout";
 
 // const Header = ({ onMenuToggle,onSidebarToggle }) => {
 //    const { theme, toggleTheme, isDark } = useTheme();
@@ -59,6 +61,7 @@ import ThemeToggle from "../themeToggle/ThemeToggle";
 //   );
 // };
 const Header = ({ onMenuToggle, onSidebarToggle, sidebarCollapsed }) => {
+  const [showLogout, setShowLogout] = useState(false);
   return (
     <header className={`header ${sidebarCollapsed ? "collapsed" : ""}`}>
       <div className="header-left">
@@ -219,7 +222,8 @@ const Header = ({ onMenuToggle, onSidebarToggle, sidebarCollapsed }) => {
           <div className="dropdown-panel">
             <button>Profile</button>
             <button>Settings</button>
-            <button className="logout-btn">Logout</button>
+            <button onClick={() => setShowLogout(true)}>Logout</button>
+            <ModalLogout className="modalLogout" show={showLogout} onClose={() => setShowLogout(false)}/>
           </div>
         </div>
 

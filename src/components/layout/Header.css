@@ -273,3 +273,8 @@
     display: none;
   }
 }
+
+/*Modal Log out*/
+.modalLogout{
+  width: 100vh;
+}

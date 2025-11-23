@@ -1,8 +1,9 @@
 // components/Sidebar.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "../../contexts/ThemeContext";
 import "./Sidebar.css";
+import { getUser } from "../../Services/userService";
 
 const Sidebar = ({ isOpen, onClose, collapsed, onToggle }) => {
   const location = useLocation();
@@ -24,7 +25,12 @@ const menuItems = [
       onClose();
     }
   };
+  
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    getUser().then(data => setUser(data));
+  }, []);
   return (
     <>
       {isOpen && <div className="sidebar-overlay" onClick={onClose} />}
@@ -36,7 +42,7 @@ const menuItems = [
             <div className="logo-icon">⚡</div>
             {!collapsed && (
               <div className="logo-text">
-                <span className="logo-primary">Admin</span>
+                <span className="logo-primary">{user?.name || "Loading..."}</span>
                 <span className="logo-secondary">Pro</span>
               </div>
             )}

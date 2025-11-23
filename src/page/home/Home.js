@@ -15,7 +15,7 @@ const Home = () => {
   //   try {
   //     const dataStudent=await getStudent();
   //       console.log(dataStudent );
-  //       setSudent(dataStudent.data);
+  //       // setSudent(dataStudent.data);
   //       // UI
 
   //   } catch (err) {

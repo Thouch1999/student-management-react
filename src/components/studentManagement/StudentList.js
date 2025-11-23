@@ -1,44 +1,28 @@
 // components/StudentList.jsx
 import React, { useState, useEffect } from 'react';
 import './StudentList.css';
+import { getStudent } from '../../Services/student';
 
 const StudentList = () => {
-  const [students, setStudents] = useState([
-    {
-      id: 1,
-      no: '01',
-      name: 'Prom Chanthoch',
-      gender: 'Male',
-      dob: '09 Aug 2000',
-      phone: '012 345 678',
-      address: 'Phnom Penh, Cambodia',
-      status: 'active'
-    },
-    {
-      id: 2,
-      no: '02',
-      name: 'Srey Nich',
-      gender: 'Female',
-      dob: '15 Mar 2001',
-      phone: '011 223 344',
-      address: 'Siem Reap, Cambodia',
-      status: 'active'
-    },
-    {
-      id: 3,
-      no: '03',
-      name: 'Vicheka',
-      gender: 'Male',
-      dob: '22 Dec 1999',
-      phone: '010 998 877',
-      address: 'Battambang, Cambodia',
-      status: 'inactive'
-    }
+  const [students, setStudents] = useState([{}
   ]);
+
+  
 
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  // const [error, setError] = useState(null);
+   const fectStudent = async() => {
+    // setError(null);
+      const dataStudent=await getStudent();
+        console.log(dataStudent );
+        setStudents(dataStudent.data);
+        // UI
+  };
+  useEffect(() => {
+    fectStudent();
+  }, []);
 
   // Check system preference and localStorage for dark mode
   useEffect(() => {
@@ -191,65 +175,75 @@ const StudentList = () => {
             </thead>
             <tbody>
               {students.map((student) => (
-                <tr key={student.id} className="student-row">
-                  <td className="text-center">{student.no}</td>
-                  <td>
-                    <div className="student-info">
-                      <div className="student-avatar">
-                        {student.name.split(' ').map(n => n[0]).join('')}
-                      </div>
-                      <div className="student-details">
-                        <div className="student-name">{student.name}</div>
-                        <div className="student-id">ID: STU{student.no.padStart(3, '0')}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="gender-cell">
-                      <span className={`gender-badge ${student.gender.toLowerCase()}`}>
-                        {student.gender}
-                      </span>
-                    </div>
-                  </td>
-                  <td>{student.dob}</td>
-                  <td>
-                    <div className="phone-cell">
-                      <span className="phone-number">{student.phone}</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="address-cell">
-                      <span className="address-text" title={student.address}>
-                        {student.address}
-                      </span>
-                    </div>
-                  </td>
-                  <td>{getStatusBadge(student.status)}</td>
-                  <td>
-                    <div className="action-buttons">
-                      <button 
-                        className="btn-action btn-view"
-                        onClick={() => handleViewDetails(student)}
-                        title="View Details"
-                      >
-                        👁️
-                      </button>
-                      <button 
-                        className="btn-action btn-edit"
-                        onClick={() => handleEdit(student)}
-                        title="Edit Student"
-                      >
-                        ✏️
-                      </button>
-                      <button 
-                        className="btn-action btn-delete"
-                        onClick={() => handleDelete(student)}
-                        title="Delete Student"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  </td>
+                // <tr key={student.id} className="student-row">
+                //   <td className="text-center">{student.id}</td>
+                //   <td>
+                //     <div className="student-info">
+                //       <div className="student-avatar">
+                //         {student.name.split(' ').map(n => n[0]).join('')}
+                //       </div>
+                //       <div className="student-details">
+                //         <div className="student-name">{student.name}</div>
+                //         <div className="student-id">ID: STU{student.no.padStart(3, '0')}</div>
+                //       </div>
+                //     </div>
+                //   </td>
+                //   <td>
+                //     <div className="gender-cell">
+                //       <span className={`gender-badge ${student.gender.toLowerCase()}`}>
+                //         {student.gender}
+                //       </span>
+                //     </div>
+                //   </td>
+                //   <td>{student.dob}</td>
+                //   <td>
+                //     <div className="phone-cell">
+                //       <span className="phone-number">{student.phone}</span>
+                //     </div>
+                //   </td>
+                //   <td>
+                //     <div className="address-cell">
+                //       <span className="address-text" title={student.address}>
+                //         {student.address}
+                //       </span>
+                //     </div>
+                //   </td>
+                //   <td>{getStatusBadge(student.status)}</td>
+                //   <td>
+                //     <div className="action-buttons">
+                //       <button 
+                //         className="btn-action btn-view"
+                //         onClick={() => handleViewDetails(student)}
+                //         title="View Details"
+                //       >
+                //         👁️
+                //       </button>
+                //       <button 
+                //         className="btn-action btn-edit"
+                //         onClick={() => handleEdit(student)}
+                //         title="Edit Student"
+                //       >
+                //         ✏️
+                //       </button>
+                //       <button 
+                //         className="btn-action btn-delete"
+                //         onClick={() => handleDelete(student)}
+                //         title="Delete Student"
+                //       >
+                //         🗑️
+                //       </button>
+                //     </div>
+                //   </td>
+                // </tr>
+                <tr>
+                  <td>{student.id}</td>
+                  <td>{student.student_name}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
               ))}
             </tbody>

@@ -1,26 +1,27 @@
 // components/Login.jsx
-import React, { useState } from 'react';
-import { 
-  Container, 
-  Row, 
-  Col, 
-  Card, 
-  Form, 
-  Button, 
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
   Alert,
   InputGroup,
-  Spinner
-} from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import './Auth.css';
-import ThemeToggle from '../../components/themeToggle/ThemeToggle';
+  Spinner,
+} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import "./Auth.css";
+import ThemeToggle from "../../components/themeToggle/ThemeToggle";
+import { isAuthenticated, login } from "../../Services/authService";
 
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    rememberMe: false
+    email: "",
+    password: "",
+    rememberMe: false,
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -28,16 +29,16 @@ const Login = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: "",
       }));
     }
   };
@@ -46,62 +47,86 @@ const Login = () => {
     const newErrors = {};
 
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = "Email is invalid";
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!validateForm()) return;
+
+  //   setIsLoading(true);
+
+  //   // Simulate API call
+  //   try {
+  //     await new Promise(resolve => setTimeout(resolve, 2000));
+
+  //     // Mock successful login
+  //     console.log('Login successful:', formData);
+
+  //     // Store authentication token (in real app)
+  //     localStorage.setItem('authToken', 'mock-jwt-token');
+  //     localStorage.setItem('user', JSON.stringify({
+  //       name: 'Admin User',
+  //       email: formData.email,
+  //       role: 'administrator'
+  //     }));
+
+  //     // Redirect to dashboard
+  //     navigate('/dashboard');
+  //   } catch (error) {
+  //     console.error('Login failed:', error);
+  //     setErrors({ submit: 'Invalid email or password' });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
 
-    // Simulate API call
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Mock successful login
-      console.log('Login successful:', formData);
-      
-      // Store authentication token (in real app)
-      localStorage.setItem('authToken', 'mock-jwt-token');
-      localStorage.setItem('user', JSON.stringify({
-        name: 'Admin User',
-        email: formData.email,
-        role: 'administrator'
-      }));
-
-      // Redirect to dashboard
-      navigate('/dashboard');
+      const data = await login(formData.email, formData.password);
+      console.log(data);
+      navigate("/dashboard");
     } catch (error) {
-      console.error('Login failed:', error);
-      setErrors({ submit: 'Invalid email or password' });
+      console.error("Login failed:", error);
+      setErrors({ submit: "Invalid email or password" });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDemoLogin = (role) => {
-    const demoAccounts = {
-      admin: { email: 'admin@school.edu', password: 'admin123' },
-      teacher: { email: 'teacher@school.edu', password: 'teacher123' },
-      student: { email: 'student@school.edu', password: 'student123' }
-    };
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/dashboard");
+    }
+  }, []);
 
-    setFormData(demoAccounts[role]);
-  };
+  // const handleDemoLogin = (role) => {
+  //   const demoAccounts = {
+  //     admin: { email: 'admin@school.edu', password: 'admin123' },
+  //     teacher: { email: 'teacher@school.edu', password: 'teacher123' },
+  //     student: { email: 'student@school.edu', password: 'student123' }
+  //   };
+
+  //   setFormData(demoAccounts[role]);
+  // };
 
   return (
     <div className="login-page">
@@ -110,7 +135,6 @@ const Login = () => {
           {/*Login Form */}
           <Col lg={12} className="login">
             <div className="login-form-container">
-             
               <Card className="login-card">
                 <Card.Body className="p-5">
                   {/* Header */}
@@ -122,12 +146,11 @@ const Login = () => {
                     <p className="login-subtitle">
                       Sign in to your account to continue
                     </p>
-                    <ThemeToggle/>
+                    <ThemeToggle />
                   </div>
-                   
 
                   {/* Demo Accounts */}
-                  <div className="demo-accounts mb-4 align-center">
+                  {/* <div className="demo-accounts mb-4 align-center">
                     <p className="text-muted text-center small mb-2">
                       Try demo accounts:
                     </p>
@@ -160,7 +183,7 @@ const Login = () => {
                         Student
                       </Button>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Error Alert */}
                   {errors.submit && (
@@ -206,7 +229,7 @@ const Login = () => {
                           onClick={() => setShowPassword(!showPassword)}
                           disabled={isLoading}
                         >
-                          {showPassword ? '🙈' : '👁️'}
+                          {showPassword ? "🙈" : "👁️"}
                         </Button>
                         <Form.Control.Feedback type="invalid">
                           {errors.password}
@@ -224,7 +247,10 @@ const Login = () => {
                         onChange={handleChange}
                         disabled={isLoading}
                       />
-                      <a href="#forgot-password" className="text-decoration-none">
+                      <a
+                        href="#forgot-password"
+                        className="text-decoration-none"
+                      >
                         Forgot password?
                       </a>
                     </div>
@@ -247,7 +273,7 @@ const Login = () => {
                           Signing In...
                         </>
                       ) : (
-                        'Sign In'
+                        "Sign In"
                       )}
                     </Button>
                   </Form>
@@ -272,7 +298,7 @@ const Login = () => {
                   {/* Footer Links */}
                   <div className="text-center mt-4">
                     <p className="text-muted">
-                      Don't have an account?{' '}
+                      Don't have an account?{" "}
                       <a href="#signup" className="text-decoration-none">
                         Contact administrator
                       </a>

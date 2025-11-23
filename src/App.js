@@ -24,7 +24,14 @@ function App() {
           }
         />
         {/* <Route path="/dashboard" element={<Dashboard/>}></Route> */}
-        <Route path={"/students"} element={<StudentManagement />}></Route>
+        <Route
+          path={"/students"}
+          element={
+            <ProtectedRoute>
+              <StudentManagement />
+            </ProtectedRoute>
+          }
+        ></Route>
         {/* <Route path={"/add-student"} element={<CreateStudent />}></Route>
         <Route path={"/stuent/edit/:id"} element={<EditStudent />}></Route> */}
       </Routes>
